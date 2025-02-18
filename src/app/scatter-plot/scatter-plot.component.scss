@@ -1,0 +1,20 @@
+:host{
+    margin-top: 100px;
+    display: block;
+}
+.dot {
+    fill: steelblue;
+    stroke: black;
+    stroke-width: 1px;
+    opacity: .5;
+}
+::ng-deep.normal{
+    fill:#aae9ce;
+    stroke: #2dc887;
+    stroke-width: 1px;
+    opacity: .5;
+}
+::ng-deep.anamoly{
+    fill: #ffc2af;
+    stroke: #e86e54;
+}
