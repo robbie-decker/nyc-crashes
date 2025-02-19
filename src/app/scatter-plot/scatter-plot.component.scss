@@ -1,3 +1,5 @@
+$dark-grey: #a9a9a9;
+
 :host{
     min-height: 250px;
   ::ng-deep {
@@ -25,6 +27,8 @@
       // padding-top: 5px;
       // padding-bottom: 5px;
       // line-height: 15px;
+      margin: 6px;
+      padding: 5px;
       color: #ffffff;
     }
 
@@ -58,8 +62,8 @@
 
     .chart_tooltip_body::before {
       position: absolute;
-      width: 16px;
-      height: 8px;
+    //   width: 16px;
+    //   height: 8px;
       transform: rotate(-90deg);
     }
     .chart_tooltip_body-after::after {
@@ -76,8 +80,8 @@
 
     .chart_tooltip_body-after::after {
       position: absolute;
-      width: 16px;
-      height: 8px;
+    //   width: 16px;
+    //   height: 8px;
       transform: rotate(90deg);
     }
 
@@ -95,14 +99,14 @@
       pointer-events: none;
       border-color: rgba(204, 204, 204, 0);
       border-bottom-color: black;
-      border-width: 11px;
+      border-width: 20px;
       right: 98%;
-      bottom: 45%;
+      bottom: 30%;
     }
 
     .chart_tooltip_body100::before {
       position: absolute;
-      width: 16px;
+      width: 0px;
       height: 8px;
       transform: rotate(-90deg);
     }
@@ -114,15 +118,15 @@
       pointer-events: none;
       border-color: rgba(204, 204, 204, 0);
       border-bottom-color: black;
-      border-width: 11px;
+      border-width: 20px;
       left: 98%;
-      bottom: 45%;
+      bottom: 20%;
     }
 
     .chart_tooltip_body-after100::after {
       position: absolute;
-      width: 16px;
-      height: 8px;
+    //   width: 0x;
+      height: 20px;
       transform: rotate(90deg);
     }
 
@@ -145,6 +149,7 @@
       min-width: fit-content;
       width: fit-content;
       max-width: 230px;
+      padding: 6px;
     }
 
     .chart_tooltip_green_vector {
@@ -193,4 +198,302 @@
 .dropdown{
     position: relative;
     top: 100px;
+}
+
+
+// Lasso!
+.selected {
+    fill: black !important; /* Highlight selected points */
+  }
+
+// Common CSS
+/* Common CSS */
+.p-0 {
+    padding: 0 !important;
+}
+
+.p-10 {
+    padding: 10px !important;
+}
+
+.p-20 {
+    padding: 20px !important;
+}
+
+.p-30 {
+    padding: 30px !important;
+}
+
+.p-l-0 {
+    padding-left: 0 !important;
+}
+
+.p-l-10 {
+    padding-left: 10px !important;
+}
+
+.p-l-20 {
+    padding-left: 20px !important;
+}
+
+.p-r-0 {
+    padding-right: 0 !important;
+}
+
+.p-r-10 {
+    padding-right: 10px !important;
+}
+
+.p-r-20 {
+    padding-right: 20px !important;
+}
+
+.p-r-30 {
+    padding-right: 30px !important;
+}
+
+.p-r-40 {
+    padding-right: 40px !important;
+}
+
+.p-t-0 {
+    padding-top: 0 !important;
+}
+
+.p-t-10 {
+    padding-top: 10px !important;
+}
+
+.p-t-20 {
+    padding-top: 20px !important;
+}
+
+.p-t-30 {
+    padding-top: 30px !important;
+}
+
+.p-b-0 {
+    padding-bottom: 0 !important;
+}
+
+.p-b-5 {
+    padding-bottom: 5px !important;
+}
+
+.p-b-10 {
+    padding-bottom: 10px !important;
+}
+
+.p-b-20 {
+    padding-bottom: 20px !important;
+}
+
+.p-b-30 {
+    padding-bottom: 30px !important;
+}
+
+.p-b-40 {
+    padding-bottom: 40px !important;
+}
+
+.m-0 {
+    margin: 0 !important;
+}
+
+.m-l-5 {
+    margin-left: 5px !important;
+}
+
+.m-l-10 {
+    margin-left: 10px !important;
+}
+
+.m-l-15 {
+    margin-left: 15px !important;
+}
+
+.m-l-20 {
+    margin-left: 20px !important;
+}
+
+.m-l-30 {
+    margin-left: 30px !important;
+}
+
+.m-l-40 {
+    margin-left: 40px !important;
+}
+
+.m-r-5 {
+    margin-right: 5px !important;
+}
+
+.m-r-10 {
+    margin-right: 10px !important;
+}
+
+.m-r-15 {
+    margin-right: 15px !important;
+}
+
+.m-r-20 {
+    margin-right: 20px !important;
+}
+
+.m-r-30 {
+    margin-right: 30px !important;
+}
+
+.m-r-40 {
+    margin-right: 40px !important;
+}
+
+.m-t-5 {
+    margin-top: 5px !important;
+}
+
+.m-t-0 {
+    margin-top: 0 !important;
+}
+
+.m-t-10 {
+    margin-top: 10px !important;
+}
+
+.m-t-15 {
+    margin-top: 15px !important;
+}
+
+.m-t-20 {
+    margin-top: 20px !important;
+}
+
+.m-t-30 {
+    margin-top: 30px !important;
+}
+
+.m-t-40 {
+    margin-top: 40px !important;
+}
+.m-t-100 {
+    margin-top: 100px;
+}
+.m-t-n5 {
+    margin-top: -5px !important;
+}
+
+.m-b-0 {
+    margin-bottom: 0 !important;
+}
+
+.m-b-5 {
+    margin-bottom: 5px !important;
+}
+
+.m-b-10 {
+    margin-bottom: 10px !important;
+}
+
+.m-b-15 {
+    margin-bottom: 15px !important;
+}
+
+.m-b-20 {
+    margin-bottom: 20px !important;
+}
+
+.m-b-30 {
+    margin-bottom: 30px !important;
+}
+
+.m-b-40 {
+    margin-bottom: 40px !important;
+}
+
+.vt {
+    vertical-align: top;
+}
+
+.vb {
+    vertical-align: bottom;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.font-normal {
+    font-weight: 400;
+}
+
+.font-light {
+    font-weight: 300;
+}
+
+.alignLeft {
+    text-align: left !important;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.du-mt-1{
+    margin-top: 1px !important;
+}
+.du-mt-2{
+    margin-top: 2px !important;
+}
+.du-mt-3{
+    margin-top: 3px !important;
+}
+
+* {
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        cursor:grab;
+    }
+
+    &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        cursor:grab;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $dark-grey;
+        border-radius: 4px;
+        cursor:grab;
+    }
+}
+
+.bold {
+    font-weight: 500 !important;
+}
+
+.centered {
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.link {
+	cursor: pointer;
+
+    &:hover {
+        font-weight: bold;
+    }
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.mat-form-field-type-mat-date-range-input.mat-form-field-appearance-fill .mat-form-field-flex{
+    padding: 0 5px !important;
+    background-color: transparent;
 }

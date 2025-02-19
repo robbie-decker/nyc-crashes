@@ -25,7 +25,7 @@ export class ScatterPlotComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.makeChart("anomalies");
+    this.makeChart();
   }
 
   upperBound = 2;
@@ -34,18 +34,29 @@ export class ScatterPlotComponent implements OnInit {
 
   selectedValue: string = 'anomalies'; // Default value
   onValueChange() {
-    if (this.selectedValue === "anomalies"){
+    this.changeChartTheme(this.selectedValue);
+  }
+
+  changeChartTheme(theme: string){
+    if (theme === "anomalies"){
+      this.current_theme = theme;
       d3.selectAll("circle")
       // Remove all classes
       .attr("class", null)
       // Remove all styles
       .attr("style", null)
-      .attr("class", (d:any) => {
+      .attr("style", (d:any) => {
         if (d.y > this.upperBound || d.y < this.lowerBound){
-            return "anamoly";
+            return `fill: #e86e54; 
+                    fill-opacity: 0.5;
+                    stroke: #e86e54; 
+                    stroke-width: 1px;`; 
         }
         else{
-            return "normal";
+            return `fill: #2dc887; 
+                    fill-opacity: 0.5;
+                    stroke: #2dc887; 
+                    stroke-width: 1px; `;
         }
       });
     }
@@ -56,10 +67,14 @@ export class ScatterPlotComponent implements OnInit {
       // Remove all styles
       .attr("style", null)
       .attr("style", (d:any) => {
-        if (this.selectedValue === "sources"){
+        if (theme === "sources"){
+          // d.current_color = this.known_source_colors[d.source_name];
+          this.current_theme = theme;
           return `fill: ${this.known_source_colors[d.source_name] || "gray"}`;
         }
-        if (this.selectedValue === "kpi"){
+        if (theme === "kpi"){
+          // d.current_color = this.known_kpi_colors[d.kpi_name];
+          this.current_theme = theme;
           return `fill: ${this.known_kpi_colors[d.kpi_name] || "gray"}`;
         }
         else{
@@ -67,9 +82,8 @@ export class ScatterPlotComponent implements OnInit {
         }
       })
     }
-    
   }
-
+  current_theme = this.selectedValue;
   known_source_colors: Record<string, string> = {}; // Maps source_name to color
   known_kpi_colors: Record<string, string> = {}; // Maps kpi_name to color
 
@@ -83,10 +97,10 @@ export class ScatterPlotComponent implements OnInit {
           "#f39c12", "#7f8c8d", "#e74c3c", "#3498db", "#2ecc71",
           "#f1c40f", "#9b59b6", "#1abc9c", "#34495e", "#e67e22",
           "#16a085", "#d35400", "#2980b9", "#8e44ad", "#c0392b",
-          "#27ae60", "#f39c12", "#7f8c8d"];
+          "#27ae60", "#f39c12", "#7f8c8d", ...this.getRandomColor(50)];
 
 
-  makeChart(theme: string){
+  makeChart(){
     // const myChart = this;
     // const myClass = myChart.divId;
 
@@ -108,6 +122,7 @@ export class ScatterPlotComponent implements OnInit {
       y: number;
       source_name: string;
       kpi_name: string;
+      current_color?: string;
     }
 
     const data: dqm_scatter_data[] = DQM_Data.map((d:any) => ({
@@ -124,7 +139,7 @@ export class ScatterPlotComponent implements OnInit {
       }
       // If source color not set then set the color
       if (!this.known_kpi_colors[d.kpi_name]) {
-        this.known_kpi_colors[d.kpi_name] = this.darkColors[(index) % this.darkColors.length]; // Using a different index for KPI colors
+        this.known_kpi_colors[d.kpi_name] = this.darkColors[(index) % this.darkColors.length];
       }
     });
     
@@ -184,17 +199,9 @@ export class ScatterPlotComponent implements OnInit {
 
 
     // Here are the data points
-    svg.selectAll(".dot")
+    const circles = svg.selectAll(".dot")
         .data(data)
         .enter().append("circle")
-        .attr("class", (d) => {
-            if (d.y > this.upperBound || d.y < this.lowerBound){
-                return "anamoly";
-            }
-            else{
-                return "normal";
-            }
-        })
         .attr("cx", d => xScale(d.x))
         .attr("cy", d => yScale(d.y))
         .attr("r", 6)
@@ -224,6 +231,58 @@ export class ScatterPlotComponent implements OnInit {
               this.hideTooltip("groupFullName");
             });
 
+        // Set theme
+        this.changeChartTheme(this.selectedValue);
+
+    // Lasso stuff
+    const lassoLayer = svg.append("g").attr("class", "lasso-layer");
+          
+    let lassoPoints: [number, number][] = [];
+    let isDragging = false;
+
+    const lasso = d3.drag()
+      .on("start", (event) => {
+        this.changeChartTheme(this.current_theme);
+        lassoPoints = []; // Reset previous lasso selection
+        isDragging = true;
+        lassoLayer.selectAll("path").remove(); // Clear old lasso
+        // remove highlights of selected points
+        // selectPointsInsideLasso([]) 
+      })
+      .on("drag", (event) => {
+        if (!isDragging) return;
+
+        const [x, y] = d3.pointer(event, svg.node());
+        lassoPoints.push([x, y]);
+
+        lassoLayer.selectAll("path").remove();
+        lassoLayer.append("path")
+          .attr("d", `M${lassoPoints.map(d => d.join(",")).join("L")}Z`)
+          .attr("fill", "rgba(0,0,255,0.1)")
+          .attr("stroke", "blue")
+          .attr("stroke-width", 1);
+      })
+      .on("end", () => {
+        isDragging = false;
+        if (lassoPoints.length > 2) {
+          selectPointsInsideLasso(lassoPoints);
+        }
+      });
+
+      svg.call(lasso as unknown as (selection: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>) => void);
+
+    // Change the stylings of selected points
+    function selectPointsInsideLasso(lassoPolygon: [number, number][]) {
+      d3.selectAll("circle").each(function(d: any) {
+        const [cx, cy] = [xScale(d.x), yScale(d.y)];
+        const isInside = d3.polygonContains(lassoPolygon, [cx, cy]);
+
+        if (isInside){
+          d3.select(this)
+            .attr("style", "fill: black;")
+        }
+      });
+    }
   }
   private showTooltip(myType: any, myData: any, myX: any, myY: any, chartWidth: any, chartHeight:any): void {
     this.tooltipType=myType
@@ -246,7 +305,7 @@ export class ScatterPlotComponent implements OnInit {
       d3.select("#d3WordCloudTooltip")
         .style('visibility', 'visible')
         .style('position', 'absolute')
-        .style('top', (myY + 30) + 'px')
+        .style('top', (myY - 20) + 'px')
         .style('bottom', 'unset')
     }
 
@@ -255,7 +314,7 @@ export class ScatterPlotComponent implements OnInit {
         .style('visibility', 'visible')
         .style('position', 'absolute')
         // .style('top', myY + 40 + 'px')
-        .style('right', (this.dataTurn + 30) + 'px')
+        .style('right', (this.dataTurn + 20) + 'px')
         .style('left', 'unset')
         // .style('bottom', 'unset')
     }
@@ -277,4 +336,18 @@ export class ScatterPlotComponent implements OnInit {
     d3.select("#d3WordCloudTooltip") 
       .style('visibility', 'hidden');
   }
+
+  getRandomColor(count: any) {
+    let shades: any = [];
+    for (let i = 0; i < count; i++) {
+      var length = 6;
+      var chars = '0123456789ABCDEF';
+      var hex = '#';
+      while (length--) hex += chars[(Math.random() * 16) | 0];
+      const shade = hex;
+      shades.push(shade);
+    }
+    return shades;
+  }
 }
+
