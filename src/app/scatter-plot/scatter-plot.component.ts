@@ -13,6 +13,13 @@ import { NumberSymbol } from '@angular/common';
 })
 export class ScatterPlotComponent implements OnInit {
 
+  tooltip:any;
+  tooltipType:any;
+  mytooltipData:any;
+  dataTurn:any;
+  height:any;
+
+
   constructor() {
     
    }
@@ -78,12 +85,13 @@ export class ScatterPlotComponent implements OnInit {
           "#16a085", "#d35400", "#2980b9", "#8e44ad", "#c0392b",
           "#27ae60", "#f39c12", "#7f8c8d"];
 
-    
-
 
   makeChart(theme: string){
+    // const myChart = this;
+    // const myClass = myChart.divId;
+
     this.known_source_colors = {} as Record<string, string>;
-this.known_kpi_colors = {} as Record<string, string>;
+    this.known_kpi_colors = {} as Record<string, string>;
 
     // Need to fetch our data
     
@@ -190,25 +198,83 @@ this.known_kpi_colors = {} as Record<string, string>;
         .attr("cx", d => xScale(d.x))
         .attr("cy", d => yScale(d.y))
         .attr("r", 6)
-        .on("mouseover", function() {
-          // this.;
-            tooltip.style("opacity", 1);
-        })  
-        .on("mousemove", showToolTip)
-        .on("mouseout", hideToolTip)
+        .on("mouseover", (event:any, d: any) => {
+          // if(myChart.props.navArrow){
+          // d3.select(event.currentTarget).attr("fill", '#1363DF');}
+          // if(getGroupLabel(d).includes("..")){
+          this.showTooltip('groupFullName', d, event.offsetX, event.offsetY, width, height);
+          // }
+        }) 
+        .on("mousemove", (event: any, d: any) => {
+          const tooltipData: any = [];
+          tooltipData.push({
+            x: d.volume,
+            y: d.kpi_zscore,
+            source_name: d.source_name,
+            kpi_name: d.kpi_name,
+            fill: "black"
+          });
+          // this.showTooltip('groupHBar', tooltipData, event.offsetX, event.offsetY, width, height);
+          this.showTooltip('groupHBar', d, event.offsetX, event.offsetY, width, height);
+        })
+        .on("mouseout", (event:any) => {
+              // if(myChart.props.navArrow){
+                d3.select(event.currentTarget).attr("fill", "#101D42");
+              // }
+              this.hideTooltip("groupFullName");
+            });
 
-    function showToolTip(event:any, d:any){
-      console.log(d);
-        tooltip
-            .html(`<b>Source: ${d.source_name}</b><br>KPI Name: ${d.kpi_name}<br>Volume: ${d.x}<br>Z-Score: ${d.y}`)
-            .style("left", (event.pageX)+ 10 + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-            .style("top", (event.pageY)+ 10 + "px")
+  }
+  private showTooltip(myType: any, myData: any, myX: any, myY: any, chartWidth: any, chartHeight:any): void {
+    this.tooltipType=myType
+    this.mytooltipData = this.tooltipType=='groupHBar'? myData:myData
+    this.dataTurn = 0;
+    this.height = 0;
+    this.dataTurn = chartWidth - myX
+    this.height = chartHeight - myY
+    
+
+    if (this.height < 200) {
+      d3.select("#d3WordCloudTooltip")
+        .style('visibility', 'visible')
+        .style('position', 'absolute')
+        .style('bottom', (this.height - 60) + 'px')
+        .style('top', 'unset')
     }
-    function hideToolTip(event:any, d:any){
-        tooltip
-            .transition()
-            .duration(200)
-            .style("opacity", 0)
+    else if (this.height > 200) {
+
+      d3.select("#d3WordCloudTooltip")
+        .style('visibility', 'visible')
+        .style('position', 'absolute')
+        .style('top', (myY + 30) + 'px')
+        .style('bottom', 'unset')
     }
+
+    if (this.dataTurn < 250) {
+      d3.select("#d3WordCloudTooltip")
+        .style('visibility', 'visible')
+        .style('position', 'absolute')
+        // .style('top', myY + 40 + 'px')
+        .style('right', (this.dataTurn + 30) + 'px')
+        .style('left', 'unset')
+        // .style('bottom', 'unset')
+    }
+    else if (this.dataTurn > 250) {
+
+      d3.select("#d3WordCloudTooltip")
+        .style('visibility', 'visible')
+        .style('position', 'absolute')
+        // .style('top', (  myY + 40) + 'px')
+        .style('left', (myX+30) + 'px')
+        .style('right', 'unset')
+        // .style('bottom', 'unset')
+    }
+    this.tooltip=true;
+  }
+
+  private hideTooltip(myType: any): void {
+    this.tooltip = false;
+    d3.select("#d3WordCloudTooltip") 
+      .style('visibility', 'hidden');
   }
 }

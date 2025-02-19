@@ -1,5 +1,47 @@
-<div id="scatter_plot"></div>
-<div>
+<div id="scatter_plot">
+    <div id="d3WordCloudTooltip">
+        <div *ngIf="(tooltipType=='groupFullName')"   style="background-color: #c9c9c9;padding: 3px;border-radius: 7px; text-transform :capitalize ;font-size: 12px;"> {{mytooltipData}}</div>
+        <div class="container chart_tooltip" style="min-height: 50px; height: auto;" *ngIf="tooltipType=='groupHBar' && tooltip">
+          <div class="row chart_tooltip_header">
+            <div class="col-12 d-flex flex-column">
+              <div class="chart_tooltip_header_heading mt-1 mb-1">
+                {{mytooltipData.source_name}}
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-2 mb-5 pb-1" *ngIf="height > 200" [ngClass]="(dataTurn < 250) ? 'chart_tooltip_body-after' :'chart_tooltip_body'">
+            <div class=" col-12 d-flex m-auto align-items-center pl-0">
+            <!-- <div class=" col-12 d-flex m-auto align-items-center pl-0" *ngFor="let data of mytooltipData"> -->
+              <div>
+                <div class="tooltip_outlay" [style.background]="mytooltipData.fill" ></div>
+              </div>  
+              <div class="chart_tooltip_body_data ml-2">
+                <p>Volume: {{mytooltipData.x}}</p>
+                <p>Z Score: {{mytooltipData.y}}</p>
+                <p>KPI: {{mytooltipData.kpi_name}}</p>
+              </div>
+            </div> 
+          </div> 
+
+          <div class="mt-2 mb-5 pb-1" *ngIf="height < 200" [ngClass]="(dataTurn < 250) ? 'chart_tooltip_body-after100' :'chart_tooltip_body100'">
+            <div class=" col-12 d-flex m-auto align-items-center pl-0">
+            <!-- <div class=" col-12 d-flex m-auto align-items-center pl-0" *ngFor="let data of mytooltipData"> -->
+              <div>
+                <div class="tooltip_outlay" [style.background]="mytooltipData.fill" ></div>
+              </div>
+              <div class="chart_tooltip_body_data ml-2">
+                <p>Volume: {{mytooltipData.x}}</p>
+                <p>Z Score: {{mytooltipData.y}}</p>
+                <p>KPI: {{mytooltipData.kpi_name}}</p>
+              </div>
+            </div> 
+          </div>
+          
+        </div>
+      </div> 
+</div>
+<div class="dropdown">
     <label for="options">Sort by: </label>
     <select id="options" [(ngModel)]="selectedValue" (change)="onValueChange()">
         <option value="anomalies">Anomalies</option>

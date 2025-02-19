@@ -1,6 +1,171 @@
 :host{
-    margin-top: 100px;
-    display: block;
+    min-height: 250px;
+  ::ng-deep {
+    .chart_tooltip {
+      margin-left: 2px;
+      margin-right: 2px;
+      width: max-content;
+      height: max-content;
+      background: #010103;
+      box-shadow: 0px 10px 32px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+    }
+
+    .chart_tooltip_header {
+      background: #343435;
+      border-radius: 8px 8px 0px 0px;
+    }
+
+    .chart_tooltip_header_heading {
+      font-family: "Poppins";
+      font-style: normal;
+      // font-weight: 500;
+      font-size: 12px;
+      // font-weight: bold;
+      // padding-top: 5px;
+      // padding-bottom: 5px;
+      // line-height: 15px;
+      color: #ffffff;
+    }
+
+    .chart_tooltip_header_data {
+      font-family: "Poppins";
+      font-style: normal;
+      // font-weight: 600;
+      font-size: 10px;
+      // line-height: 21px;
+      color: #ffffff;
+    }
+
+    // Normal Pointer Tooltip
+    .chart_tooltip_body {
+      background: #010103;
+      box-shadow: 0px 10px 32px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+    }
+
+    .chart_tooltip_body::before {
+      border: solid transparent;
+      content: " ";
+      position: absolute !important;
+      pointer-events: none;
+      border-color: rgba(204, 204, 204, 0);
+      border-bottom-color: #343435 !important;
+      border-width: 11px;
+      right: 98%;
+      bottom: 75%;
+    }
+
+    .chart_tooltip_body::before {
+      position: absolute;
+      width: 16px;
+      height: 8px;
+      transform: rotate(-90deg);
+    }
+    .chart_tooltip_body-after::after {
+      border: solid transparent;
+      content: " ";
+      position: absolute !important;
+      pointer-events: none;
+      border-color: rgba(204, 204, 204, 0);
+      border-bottom-color: #343435 !important;
+      border-width: 11px;
+      left: 98%;
+      bottom: 75%;
+    }
+
+    .chart_tooltip_body-after::after {
+      position: absolute;
+      width: 16px;
+      height: 8px;
+      transform: rotate(90deg);
+    }
+
+    // Below Chart Tooltip
+    .chart_tooltip_body100 {
+      background: #010103;
+      box-shadow: 0px 10px 32px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+    }
+
+    .chart_tooltip_body100::before {
+      border: solid transparent;
+      content: " ";
+      position: absolute !important;
+      pointer-events: none;
+      border-color: rgba(204, 204, 204, 0);
+      border-bottom-color: black;
+      border-width: 11px;
+      right: 98%;
+      bottom: 45%;
+    }
+
+    .chart_tooltip_body100::before {
+      position: absolute;
+      width: 16px;
+      height: 8px;
+      transform: rotate(-90deg);
+    }
+
+    .chart_tooltip_body-after100::after {
+      border: solid transparent;
+      content: " ";
+      position: absolute !important;
+      pointer-events: none;
+      border-color: rgba(204, 204, 204, 0);
+      border-bottom-color: black;
+      border-width: 11px;
+      left: 98%;
+      bottom: 45%;
+    }
+
+    .chart_tooltip_body-after100::after {
+      position: absolute;
+      width: 16px;
+      height: 8px;
+      transform: rotate(90deg);
+    }
+
+    .chart_tooltip_redDot {
+      width: 16px;
+      height: 16px;
+      background: #e85c3d;
+      border: 2px solid #ffffff;
+      border-radius: 16px;
+    }
+
+    .chart_tooltip_body_data {
+      font-family: "Poppins";
+      font-style: normal;
+      // font-weight: 700;
+      font-size: 12px;
+      // line-height: 18px;
+      // text-transform: uppercase;
+      color: #ffffff;
+      min-width: fit-content;
+      width: fit-content;
+      max-width: 230px;
+    }
+
+    .chart_tooltip_green_vector {
+      background: #3ac97c;
+    }
+    .tooltip_outlay {
+      width: 8px;
+      min-width: 8px;
+      height: 8px;
+      // border: 1px solid #ffffff;
+      border-radius: 16px;
+    }
+
+    .chart_tooltip_pointer {
+      position: absolute;
+      width: 16px;
+      height: 8px;
+      background: #010103;
+      transform: rotate(-90deg);
+    }
+  }
 }
 .dot {
     fill: steelblue;
@@ -17,4 +182,15 @@
 ::ng-deep.anamoly{
     fill: #ffc2af;
     stroke: #e86e54;
+}
+#scatter_plot{
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    top: 100px;
+}
+
+.dropdown{
+    position: relative;
+    top: 100px;
 }
