@@ -1,3 +1,9 @@
-<div id="scatter_plot">
-    
+<div id="scatter_plot"></div>
+<div>
+    <label for="options">Sort by: </label>
+    <select id="options" [(ngModel)]="selectedValue" (change)="onValueChange()">
+        <option value="anomalies">Anomalies</option>
+        <option value="sources">Sources</option>
+        <option value="kpi">KPI</option>
+    </select>
 </div>

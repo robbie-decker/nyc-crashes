@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 
+
+import { DQM_Data } from '../data/DQM_Data';
+
 import * as d3 from "d3";
+import { NumberSymbol } from '@angular/common';
 @Component({
   selector: 'app-scatter-plot',
   templateUrl: './scatter-plot.component.html',
@@ -12,10 +16,16 @@ export class ScatterPlotComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.makeChart();
+    this.makeChart("anomalies");
   }
 
-  makeChart(){
+  selectedValue: string = 'anomalies'; // Default value
+  onValueChange() {
+    this.makeChart(this.selectedValue);
+  }
+
+  makeChart(theme: string){
+    console.log(DQM_Data.length)
 
     // Need to fetch our data
     
@@ -27,15 +37,16 @@ export class ScatterPlotComponent implements OnInit {
                   .attr("width", width)
                   .attr("height", height);
     
-    interface my_data{
+    interface dqm_scatter_data{
       x: number;
       y: number;
     }
 
-    const data: my_data[] = d3.range(50).map(() => ({
-        x: getRandomVolume(),
-        y: getRandomZscore()
+    const data: dqm_scatter_data[] = DQM_Data.map((d:any) => ({
+        x: d.volume,
+        y: d.kpi_zscore,
     }));
+
     
     const xScale = d3.scaleLinear().domain([0, 10000]).range([margin.left, width - margin.right]);
     const yScale = d3.scaleLinear().domain([-5, 5]).range([height - margin.bottom, margin.top]);
@@ -116,19 +127,9 @@ export class ScatterPlotComponent implements OnInit {
         })  
         .on("mousemove", showToolTip)
         .on("mouseout", hideToolTip)
-    
-
-
-    function getRandomVolume():number {
-        return (Math.floor(Math.random() * 10000) + 1);
-    }
-
-    function getRandomZscore():number {
-        return (Number((Math.random() * 8 - 4).toFixed(2)));
-    }
-
 
     function showToolTip(event:any, d:any){
+      console.log(d);
         tooltip
             .html(`Volume: ${d.x}<br>Z-Score: ${d.y} `)
             .style("left", (event.pageX)+ 10 + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
